@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:weather_app/core/providers/weather_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/ui/views/home_view.dart';
 import 'package:weather_app/core/services/injection_container.dart' as di;
 
@@ -12,12 +11,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      home: ChangeNotifierProvider(
-        create: (context) => WeatherProvider(),
-        child: HomeView(),
+    return ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark(),
+        home: HomeView(),
       ),
     );
   }

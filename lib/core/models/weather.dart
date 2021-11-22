@@ -30,6 +30,7 @@ class Weather {
 class ConsolidatedWeather {
   const ConsolidatedWeather({
     required this.weatherStateName,
+    required this.weatherStateAbbr,
     required this.applicableDate,
     required this.minTemp,
     required this.maxTemp,
@@ -41,6 +42,7 @@ class ConsolidatedWeather {
   });
 
   final String weatherStateName;
+  final String weatherStateAbbr;
   final DateTime applicableDate;
   final double minTemp;
   final double maxTemp;
@@ -53,6 +55,7 @@ class ConsolidatedWeather {
   factory ConsolidatedWeather.fromJson(Map<String, dynamic> json) =>
       ConsolidatedWeather(
         weatherStateName: json["weather_state_name"],
+        weatherStateAbbr: json["weather_state_abbr"],
         applicableDate: DateTime.parse(json["applicable_date"]),
         minTemp: json["min_temp"].toDouble(),
         maxTemp: json["max_temp"].toDouble(),

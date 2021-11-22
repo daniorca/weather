@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
-import 'package:weather_app/core/providers/weather_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_app/core/providers/weather_notifier.dart';
+import 'package:weather_app/core/providers/weather_providers.dart';
 import 'package:weather_app/ui/design_system/app_color.dart';
-import 'package:weather_app/ui/design_system/home_background.dart';
+import 'package:weather_app/ui/widgets/home_background.dart';
+import 'package:weather_app/ui/views/loading_view.dart';
 import 'package:weather_app/ui/views/results_view.dart';
 import 'package:weather_app/ui/widgets/app_icon_button.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -36,7 +37,7 @@ class _HomeViewState extends State<HomeView> {
             children: <Widget>[
               const SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: Row(
                   children: <Widget>[
                     Flexible(
@@ -44,46 +45,40 @@ class _HomeViewState extends State<HomeView> {
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(16)),
+                            borderRadius: BorderRadius.circular(14)),
                         child: TextField(
                           cursorColor: Colors.white,
                           controller: searchController,
                           decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.only(left: 10, top: 14),
-                              border: InputBorder.none,
-                              hintText: 'Enter city name',
-                              suffixIcon: AppIconButton(
-                                  icon: Icons.clear,
-                                  onPressed: () => searchController.clear())),
+                            contentPadding:
+                                const EdgeInsets.only(left: 10, top: 14),
+                            border: InputBorder.none,
+                            hintText: 'Enter city name',
+                            suffixIcon: AppIconButton(
+                              icon: Icons.clear,
+                              onPressed: () => _clear(),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 15),
                     AppIconButton(
                       icon: Icons.search_outlined,
-                      onPressed: () =>
-                          Provider.of<WeatherProvider>(context, listen: false)
-                              .getWeather(searchController.text),
+                      onPressed: () async => _getWeather(searchController.text),
                     ),
                   ],
                 ),
               ),
-              Consumer<WeatherProvider>(builder: (context, weatherProvider, _) {
+              Builder(builder: (_) {
+                final state = ref.watch(weatherNotifierProvider);
                 return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: weatherProvider.isLoading
-                      ? Container(
-                          height: size.height * .7,
-                          child: const Center(
-                            child: SpinKitRipple(
-                              color: Colors.white,
-                              size: 150.0,
-                            ),
-                          ))
-                      : weatherProvider.weather != null
-                          ? ResultsView()
-                          : HomeBackground(),
+                  duration: const Duration(milliseconds: 300),
+                  child: (state is WeatherLoading)
+                      ? const LoadingView()
+                      : (state is WeatherLoaded)
+                          ? ResultsView(weather: state.weather)
+                          : const HomeBackground(),
                 );
               }),
             ],
@@ -91,5 +86,14 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+  }
+
+  Future<void> _getWeather(String cityName) async {
+    await ref.read(weatherNotifierProvider.notifier).getWeather(cityName);
+  }
+
+  void _clear() {
+    searchController.clear();
+    ref.read(weatherNotifierProvider.notifier).weatherInitial();
   }
 }
