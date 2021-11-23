@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/ui/design_system/app_asset.dart';
+import 'package:weather_app/ui/design_system/app_color.dart';
+import 'package:weather_app/ui/design_system/app_text.dart';
 
 class HomeBackground extends StatelessWidget {
   const HomeBackground({Key? key}) : super(key: key);
@@ -7,28 +9,47 @@ class HomeBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final orientation = MediaQuery.of(context).orientation;
     return Container(
       height: size.height * .8,
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: size.height * .1),
-            Text(
-              'Welcome',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Type the name of a city to get the weather',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.6)),
-            ),
-            const SizedBox(height: 80),
-            AppAsset.image(AppAsset.backgroundImage, width: size.width * .75),
-          ],
-        ),
+        child: orientation == Orientation.portrait
+            ? Column(
+                children: <Widget>[
+                  SizedBox(height: size.height * .1),
+                  _welcomeWidget,
+                  const SizedBox(height: 16),
+                  _instructions,
+                  const SizedBox(height: 80),
+                  _backgroundImage(size.width * .75)
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      SizedBox(height: size.height * .1),
+                      _welcomeWidget,
+                      const SizedBox(width: 16),
+                      _instructions,
+                    ],
+                  ),
+                  _backgroundImage(size.width * .40)
+                ],
+              ),
       ),
     );
   }
+
+  Widget get _welcomeWidget => AppText.title30d('Welcome');
+
+  Widget get _instructions =>
+      AppText.body14r('Type the name of a city to get the weather',
+          color: AppColor.lightWhite);
+
+  Widget _backgroundImage(double width) => AppAsset.image(
+        AppAsset.backgroundImage,
+        width: width,
+      );
 }

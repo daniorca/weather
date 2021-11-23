@@ -1,6 +1,6 @@
 class Weather {
   const Weather({
-    required this.consolidatedWeather,
+    required this.weatherOfDay,
     required this.time,
     required this.sunRise,
     required this.sunSet,
@@ -8,7 +8,7 @@ class Weather {
     required this.country,
   });
 
-  final List<ConsolidatedWeather> consolidatedWeather;
+  final List<WeatherOfDay> weatherOfDay;
   final DateTime time;
   final DateTime sunRise;
   final DateTime sunSet;
@@ -16,9 +16,8 @@ class Weather {
   final String country;
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
-        consolidatedWeather: List<ConsolidatedWeather>.from(
-            json["consolidated_weather"]
-                .map((x) => ConsolidatedWeather.fromJson(x))),
+        weatherOfDay: List<WeatherOfDay>.from(
+            json["consolidated_weather"].map((x) => WeatherOfDay.fromJson(x))),
         time: DateTime.parse(json["time"]),
         sunRise: DateTime.parse(json["sun_rise"]),
         sunSet: DateTime.parse(json["sun_set"]),
@@ -27,8 +26,8 @@ class Weather {
       );
 }
 
-class ConsolidatedWeather {
-  const ConsolidatedWeather({
+class WeatherOfDay {
+  WeatherOfDay({
     required this.weatherStateName,
     required this.weatherStateAbbr,
     required this.applicableDate,
@@ -36,9 +35,9 @@ class ConsolidatedWeather {
     required this.maxTemp,
     required this.currentTemp,
     required this.windSpeed,
-    required this.windDirection,
     required this.airPressure,
     required this.humidity,
+    this.isSelected = false,
   });
 
   final String weatherStateName;
@@ -49,11 +48,10 @@ class ConsolidatedWeather {
   final double currentTemp;
   final int humidity;
   final double windSpeed;
-  final double windDirection;
   final double airPressure;
+  bool isSelected;
 
-  factory ConsolidatedWeather.fromJson(Map<String, dynamic> json) =>
-      ConsolidatedWeather(
+  factory WeatherOfDay.fromJson(Map<String, dynamic> json) => WeatherOfDay(
         weatherStateName: json["weather_state_name"],
         weatherStateAbbr: json["weather_state_abbr"],
         applicableDate: DateTime.parse(json["applicable_date"]),
@@ -61,7 +59,6 @@ class ConsolidatedWeather {
         maxTemp: json["max_temp"].toDouble(),
         currentTemp: json["the_temp"].toDouble(),
         windSpeed: json["wind_speed"].toDouble(),
-        windDirection: json["wind_direction"].toDouble(),
         airPressure: json["air_pressure"].toDouble(),
         humidity: json["humidity"],
       );

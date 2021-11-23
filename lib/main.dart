@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/ui/views/home_view.dart';
-import 'package:weather_app/core/services/injection_container.dart' as di;
 
-void main() async {
-  await di.init();
+void main() {
   runApp(MyApp());
 }
 
