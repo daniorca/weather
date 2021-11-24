@@ -1,4 +1,4 @@
-# Weather app built in Flutter using Riverpod and the MetaWeather API
+# Weather app built in Flutter using Riverpod and MetaWeather API
 
 ![Weather Today app preview](screenshots/weather_screenshots.png)
 
@@ -15,13 +15,13 @@ The [MetaWeather API](https://www.metaweather.com/api/) is used to fetch from a 
 
 ## App Folder Structure
 
-The `models` weather class to represent data from API.
-The `providers` riverpod state management classes.
-The `services` fetching data from API and shared preferences.
-The `design_system` all related to colors, fonts, assets
-The `misc` helper reusable widgets and functions
-The `views` main UI views of the app
-The `widgets` widgets components
+- The `models` weather class to represent data from API
+- The `providers` riverpod state management classes
+- The `services` fetching data from API and shared preferences
+- The `design_system` all related to colors, fonts, assets
+- The `misc` helper reusable widgets and functions
+- The `views` main UI views of the app
+- The `widgets` widgets components
 
 ```
 /lib
@@ -44,4 +44,4 @@ The `widgets` widgets components
 - [x] [shared preferences](https://pub.dev/packages/shared_preferences) 
 - [x] [flutter spinkit](https://pub.dev/packages/flutter_spinkit)
 
-## [LICENSE: MIT](LICENSE.md)
+## [LICENSE: MIT](LICENSE)
