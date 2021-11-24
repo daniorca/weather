@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class AppIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
-  AppIconButton({Key? key, required this.icon, required this.onPressed})
+  final Color color;
+  const AppIconButton({Key? key, required this.icon, required this.onPressed, this.color = Colors.white})
       : super(key: key);
 
   @override
@@ -15,7 +16,7 @@ class AppIconButton extends StatelessWidget {
       child: IconButton(
         icon: Icon(
           icon,
-          color: Colors.white,
+          color: color,
         ),
         onPressed: onPressed,
       ),

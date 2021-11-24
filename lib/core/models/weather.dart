@@ -2,16 +2,12 @@ class Weather {
   const Weather({
     required this.weatherOfDay,
     required this.time,
-    required this.sunRise,
-    required this.sunSet,
     required this.cityName,
     required this.country,
   });
 
   final List<WeatherOfDay> weatherOfDay;
   final DateTime time;
-  final DateTime sunRise;
-  final DateTime sunSet;
   final String cityName;
   final String country;
 
@@ -19,8 +15,6 @@ class Weather {
         weatherOfDay: List<WeatherOfDay>.from(
             json["consolidated_weather"].map((x) => WeatherOfDay.fromJson(x))),
         time: DateTime.parse(json["time"]),
-        sunRise: DateTime.parse(json["sun_rise"]),
-        sunSet: DateTime.parse(json["sun_set"]),
         cityName: json["title"],
         country: json['parent']['title'],
       );

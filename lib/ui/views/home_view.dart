@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/core/providers/weather_notifier.dart';
 import 'package:weather_app/core/providers/weather_providers.dart';
-import 'package:weather_app/ui/design_system/app_color.dart';
 import 'package:weather_app/ui/design_system/app_text.dart';
 import 'package:weather_app/ui/misc/helpers.dart';
 import 'package:weather_app/ui/views/error_view.dart';
@@ -28,12 +27,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       body: Container(
         height: size.height,
         width: size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: AppColor.bgGradient,
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter),
-        ),
+        decoration: gradientDecoration,
         child: SafeArea(
           bottom: false,
           child: Column(

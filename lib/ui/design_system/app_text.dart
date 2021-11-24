@@ -29,14 +29,17 @@ class AppText {
   static Text title60m(String str, {Color? color}) =>
       _title(str, 60, _medium, 0, 10, color);
 
-  static Text title30d(String str, {Color? color}) =>
-      _title(str, 30, _demiBold, 0, 34, color);
-
-  static Text body20r(String str, {Color? color}) =>
-      _title(str, 20, _regular, 0.4, 26, color);
+  static Text body30r(String str, {Color? color}) =>
+      _title(str, 30, _regular, 0, 40, color);
 
   static Text body24r(String str, {Color? color}) =>
       _title(str, 24, _regular, 0.4, 28, color);
+
+  static Text body22r(String str, {Color? color}) =>
+      _title(str, 22, _regular, 0, 32, color);
+  
+  static Text body20r(String str, {Color? color}) =>
+      _title(str, 20, _regular, 0.4, 26, color);
 
   static Text body18r(String str, {Color? color}) =>
       _title(str, 18, _regular, 0.3, 24, color);
@@ -48,6 +51,9 @@ class AppText {
 
   static Text body14r(String str, {Color? color}) =>
       _title(str, 14, _regular, 0.1, 20, color);
+
+  static Text title30d(String str, {Color? color}) =>
+      _title(str, 30, _demiBold, 0, 34, color);
 
   static Text body24d(String str, {Color? color}) =>
       _title(str, 24, _demiBold, 0.4, 28, color);

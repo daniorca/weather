@@ -7,10 +7,14 @@ import 'package:weather_app/ui/design_system/app_asset.dart';
 import 'package:weather_app/ui/design_system/app_color.dart';
 import 'package:weather_app/ui/design_system/app_text.dart';
 import 'package:weather_app/ui/misc/helpers.dart';
+import 'package:weather_app/ui/widgets/app_icon_button.dart';
 import 'package:weather_app/ui/widgets/min_max_temp.dart';
+import 'package:weather_app/ui/widgets/modal_bottomsheet.dart';
+import 'package:weather_app/ui/widgets/temp_settings.dart';
 
 class SelectedForecast extends ConsumerStatefulWidget {
-  SelectedForecast({Key? key}) : super(key: key);
+  final DateTime latestUpdate;
+  SelectedForecast(this.latestUpdate, {Key? key}) : super(key: key);
 
   @override
   _SelectedForecastState createState() => _SelectedForecastState();
@@ -18,7 +22,7 @@ class SelectedForecast extends ConsumerStatefulWidget {
 
 class _SelectedForecastState extends ConsumerState<SelectedForecast> {
   WeatherOfDay? weather;
-
+  double currentTemp = 0;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -40,8 +44,8 @@ class _SelectedForecastState extends ConsumerState<SelectedForecast> {
         Container(
           width: orientation == Orientation.portrait
               ? double.infinity
-              : size.width * .35,
-          height: orientation == Orientation.portrait ? 350 : 200,
+              : size.width * .36,
+          height: orientation == Orientation.portrait ? 350 : 210,
           decoration: cardBoxDecoration(),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
@@ -60,21 +64,45 @@ class _SelectedForecastState extends ConsumerState<SelectedForecast> {
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    orientation == Orientation.portrait
-                        ? AppText.title90m(
-                            '${weather.currentTemp.toStringAsFixed(0)}º')
-                        : AppText.title60m(
-                            '${weather.currentTemp.toStringAsFixed(0)}º')
-                  ],
-                ),
+                Consumer(builder: (_, WidgetRef ref, __) {
+                  final isCelsius = ref.watch(tempNotifierProvider);
+                  calculateTemp(isCelsius);
+                  return orientation == Orientation.portrait
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText.title90m(
+                                '${currentTemp.toStringAsFixed(0)}'),
+                            AppText.body22r('º'),
+                            AppText.body30r(isCelsius ? 'C' : 'F'),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            AppText.title60m(
+                                '${currentTemp.toStringAsFixed(0)}'),
+                            AppText.body15r('º'),
+                            AppText.body15r(isCelsius ? 'C' : 'F'),
+                          ],
+                        );
+                }),
                 Spacer(),
-                MinMaxTemperature(
-                  minTemp: weather.minTemp,
-                  maxTemp: weather.maxTemp,
-                  isSmall: false,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    MinMaxTemperature(
+                      minTemp: weather.minTemp,
+                      maxTemp: weather.maxTemp,
+                      isSmall: false,
+                    ),
+                    AppText.caption12r(
+                        'updated: ${DateFormat.jms().format(widget.latestUpdate)}',
+                        color: AppColor.lightWhite)
+                  ],
                 ),
                 SizedBox(height: 2),
                 Column(
@@ -99,9 +127,9 @@ class _SelectedForecastState extends ConsumerState<SelectedForecast> {
                       children: <Widget>[
                         AppText.body15r('${weather.humidity}%'),
                         AppText.body15r(
-                            '${weather.airPressure.toStringAsFixed(0)} mbar'),
+                            '${weather.airPressure.toStringAsFixed(0)} mb'),
                         AppText.body15r(
-                            '${weather.windSpeed.toStringAsFixed(0)} mp/h'),
+                            '${weather.windSpeed.toStringAsFixed(0)} mph'),
                       ],
                     )
                   ],
@@ -116,7 +144,29 @@ class _SelectedForecastState extends ConsumerState<SelectedForecast> {
           child: AppAsset.image('${weather.weatherStateAbbr}.png',
               width: imageSize, height: imageSize),
         ),
+        Positioned(
+          top: 4,
+          right: 8,
+          child: AppIconButton(
+            icon: Icons.settings,
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (context) => ModalBottomSheet(
+                title: 'Temperature unit',
+                body: TemperatureSettings(),
+              ),
+              isDismissible: true,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(borderRadius: borderRadiusTop(8)),
+            ),
+            color: AppColor.lightWhite,
+          ),
+        )
       ],
     );
   }
+
+  void calculateTemp(bool isCelsius) => isCelsius
+      ? currentTemp = weather!.currentTemp
+      : currentTemp = convertToFahrenheit(weather!.currentTemp);
 }

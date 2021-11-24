@@ -32,7 +32,7 @@ class ResultsView extends ConsumerWidget {
                         children: <Widget>[
                           _cityName,
                           const SizedBox(height: 15),
-                          SelectedForecast(),
+                          SelectedForecast(weather.time),
                           const SizedBox(height: 50),
                         ],
                       ),
@@ -47,10 +47,9 @@ class ResultsView extends ConsumerWidget {
               ],
             )
           : ListView(
-              padding: const EdgeInsets.only(top: 60),
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  padding: const EdgeInsets.fromLTRB(28, 55, 28, 0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -60,7 +59,7 @@ class ResultsView extends ConsumerWidget {
                           Stack(
                             clipBehavior: Clip.none,
                             children: <Widget>[
-                              SelectedForecast(),
+                              SelectedForecast(weather.time),
                               Positioned(
                                 top: -60,
                                 right: 0,
