@@ -70,7 +70,7 @@ class ResultsView extends ConsumerWidget {
                           SizedBox(height: size.height * 0.12),
                         ],
                       ),
-                      SizedBox(width: 40),
+                      SizedBox(width: 30),
                       WeatherOfDayList(weatherOfDay: weather.weatherOfDay),
                     ],
                   ),

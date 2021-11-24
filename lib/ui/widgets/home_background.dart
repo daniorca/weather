@@ -20,8 +20,8 @@ class HomeBackground extends StatelessWidget {
                   _welcomeWidget,
                   const SizedBox(height: 16),
                   _instructions,
-                  const SizedBox(height: 80),
-                  _backgroundImage(size.width * .75)
+                  SizedBox(height: size.height * 0.03),
+                  Expanded(child: _backgroundImage(size.width * .75))
                 ],
               )
             : Row(
