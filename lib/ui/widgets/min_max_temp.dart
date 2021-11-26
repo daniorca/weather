@@ -30,8 +30,7 @@ class _MinMaxTemperatureState extends ConsumerState<MinMaxTemperature> {
   Widget build(BuildContext context) {
     final state = ref.watch(tempNotifierProvider);
     calculateTemp(state);
-    return Transform(
-      transform: Matrix4.identity()..scale(widget.isSmall ? 0.95 : 1.25),
+    return Transform.scale(scale: widget.isSmall ? 0.95 : 1.25,
       child: Row(
         mainAxisAlignment:
             widget.isSmall ? MainAxisAlignment.center : MainAxisAlignment.start,
