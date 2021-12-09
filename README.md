@@ -1,8 +1,8 @@
-# Weather app built in Flutter using Riverpod and MetaWeather API
+# Weather app
 
 ![Weather Today app preview](screenshots/weather_screenshots.png)
 
-The [MetaWeather API](https://www.metaweather.com/api/) is used to fetch from a city their weather data [current, minimum and maximum temperature, weather state, date, humidity, pressure and wind speed].
+Built in Flutter using Riverpod and the [MetaWeather API](https://www.metaweather.com/api/) to fetch from a city their weather data [current, minimum and maximum temperature, weather state, date, humidity, pressure and wind speed].
 ## Requirements that the app meets
 - A loading indicator is displayed when fetching the data
 - The weather list item contains the day of the week abbreviation, weather condition image, min and max temperature
